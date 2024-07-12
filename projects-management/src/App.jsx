@@ -73,7 +73,6 @@ function App() {
 				projectID: prevState.selectedProjectID,
 				id: taskID,
 			};
-			console.log(newTask);
 
 			return {
 				...prevState,
@@ -82,7 +81,14 @@ function App() {
 		});
 	}
 
-	function handleDeleteTask() {}
+	function handleDeleteTask(id) {
+		setProjectsState((prevState) => {
+			return {
+				...prevState,
+				tasks: prevState.tasks.filter((task) => task.id !== id),
+			};
+		});
+	}
 
 	const selectedProject = projectsState.projects.find(
 		(project) => project.id === projectsState.selectedProjectID
@@ -111,11 +117,12 @@ function App() {
 	}
 
 	return (
-		<main className="h-screen my-8 flex gap-8">
+		<main className="min-h-[520px] my-8 flex justify-center gap-8 ">
 			<ProjectsSidebar
 				onStartAddProject={handleStartAddProject}
 				projects={projectsState.projects}
 				onSelectProject={handleSelectProject}
+				selectedProjectID={projectsState.selectedProjectID}
 			/>
 			{content}
 		</main>

@@ -8,6 +8,10 @@ export default function NewTask({ onAdd }) {
 	}
 
 	function handleClick() {
+		if (enteredTask.trim() === "") {
+			return;
+		}
+
 		onAdd(enteredTask);
 		setEnteredTask("");
 	}
@@ -22,7 +26,8 @@ export default function NewTask({ onAdd }) {
 			/>
 			<button
 				onClick={handleClick}
-				className="text-stone-700 hover:text-stone-950">
+				className="text-stone-700 hover:text-stone-950"
+			>
 				Add Task
 			</button>
 		</div>
