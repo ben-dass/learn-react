@@ -4,10 +4,10 @@ import {
 	increment,
 	incrementAsync,
 	incrementByAmount,
-} from "@features/Counter/counterSlice";
+} from "@features/rtk_p1/counterSlice";
 import { RootState, useAppDispatch, useAppSelector } from "@src/app/store";
 
-const Counter = () => {
+const RTK_P1 = () => {
 	const counter = useAppSelector((state: RootState) => {
 		console.log("state", state.counter);
 		return state.counter;
@@ -43,4 +43,4 @@ const Counter = () => {
 	);
 };
 
-export default Counter;
+export default RTK_P1;
