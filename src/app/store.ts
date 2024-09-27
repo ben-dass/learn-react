@@ -5,7 +5,10 @@ import counterReducer from "@features/rtk_p1/counterSlice.ts";
 import postsReducer from "@features/rtk_p2/postsSlice.ts";
 
 export const store = configureStore({
-	reducer: { counter: counterReducer, posts: postsReducer },
+	reducer: {
+		counter: counterReducer,
+		posts: postsReducer,
+	},
 });
 
 export type RootState = ReturnType<typeof store.getState>;

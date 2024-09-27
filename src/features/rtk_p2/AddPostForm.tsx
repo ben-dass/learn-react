@@ -33,9 +33,7 @@ const AddPostForm = () => {
 	});
 
 	const onSubmit = (values: z.infer<typeof formSchema>) => {
-		dispatch(
-			addPost({ title: values.postTitle, content: values.postContent }),
-		);
+		dispatch(addPost(values.postTitle, values.postContent));
 		navigate("..");
 	};
 

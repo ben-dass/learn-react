@@ -1,4 +1,4 @@
-# React Starter Template
+# Learn React
 
 ## Stack
 
@@ -6,6 +6,7 @@
 2. React
 3. TypeScript
 4. Redux Toolkit (RTK)
-5. react-router
-6. tailwindcss
+5. React Router
+6. TailwindCSS
 7. shadcn/ui
+8. Zod
