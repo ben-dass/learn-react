@@ -15,4 +15,14 @@ export const links: linkItem[] = [
 		link: "rtk_p2",
 		description: "Multi component redux toolkit usage.",
 	},
+	{
+		title: "RTK Query Part 1",
+		link: "rtk_query_p1",
+		description: "RTK Query CRUD example app.",
+	},
+	{
+		title: "RTK Query Part 2",
+		link: "rtk_query_p2",
+		description: "RTK Query advanced app example.",
+	},
 ];

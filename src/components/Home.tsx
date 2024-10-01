@@ -14,7 +14,7 @@ const Home = () => {
 				>
 					<Link
 						to={`/${link}`}
-						className="group w-[6rem] text-gray-500 transition-all duration-300 ease-in-out hover:text-gray-900"
+						className="group w-[10rem] text-gray-500 transition-all duration-300 ease-in-out hover:text-gray-900"
 					>
 						<span
 							onMouseOver={() => setHoveredTitle(title)}

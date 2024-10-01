@@ -1,10 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "@src/App.tsx";
-import RTK_P1 from "@features/rtk_p1/RTK_P1.tsx";
 import NotFound from "@features/NotFound.tsx";
 import Home from "@components/Home.tsx";
+import RTK_P1 from "@features/rtk_p1/RTK_P1.tsx";
 import RTK_P2 from "@features/rtk_p2/RTK_P2.tsx";
 import AddPostForm from "@features/rtk_p2/AddPostForm.tsx";
+import RTK_Query_P1 from "@features/rtk_query_p1/RTK_Query_P1.tsx";
+import RTK_Query_P2 from "@features/rtk_query_p2/RTK_Query_P2.tsx";
 
 const router = createBrowserRouter([
 	{
@@ -33,6 +35,14 @@ const router = createBrowserRouter([
 								element: <AddPostForm />,
 							},
 						],
+					},
+					{
+						path: "rtk_query_p1",
+						element: <RTK_Query_P1 />,
+					},
+					{
+						path: "rtk_query_p2",
+						element: <RTK_Query_P2 />,
 					},
 				],
 			},

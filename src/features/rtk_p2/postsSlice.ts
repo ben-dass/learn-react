@@ -1,10 +1,19 @@
-import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit";
+import {
+	createAsyncThunk,
+	createSlice,
+	isRejectedWithValue,
+	nanoid,
+	PayloadAction,
+} from "@reduxjs/toolkit";
 import { RootState } from "@src/app/store.ts";
+import axios from "axios";
+
+const POSTS_URL = "https://jsonplaceholder.typicode.com/posts";
 
 export interface IPost {
 	id: string;
 	title: string;
-	content: string;
+	body: string;
 	reactions: {
 		thumbsUp: number;
 		wow: number;
@@ -14,32 +23,41 @@ export interface IPost {
 	};
 }
 
-const initialState: IPost[] = [
-	{
-		id: "1",
-		title: "Learning Redux ToolKit",
-		content: "Some content on learning redux toolkit",
-		reactions: {
-			thumbsUp: 2,
-			wow: 1,
-			heart: 3,
-			rocket: 1,
-			coffee: 3,
-		},
+export interface IPosts {
+	posts: IPost[];
+	status: "idle" | "loading" | "succeeded" | "failed";
+	error: string | undefined;
+}
+
+const initialState: IPosts = {
+	posts: [],
+	status: "idle",
+	error: "",
+};
+
+export const fetchPosts = createAsyncThunk<IPost[]>(
+	"posts/fetchPosts",
+	async () => {
+		try {
+			const response = await axios.get(POSTS_URL);
+			return [...response.data];
+		} catch (err) {
+			throw isRejectedWithValue(err);
+		}
 	},
-	{
-		id: "2",
-		title: "Slices...",
-		content: "Some content on slices",
-		reactions: {
-			thumbsUp: 1,
-			wow: 33,
-			heart: 2,
-			rocket: 3,
-			coffee: 54,
-		},
+);
+
+export const addNewPost = createAsyncThunk(
+	"pasts/addNewPosts",
+	async (initialPost) => {
+		try {
+			const response = await axios.post(POSTS_URL, initialPost);
+			return response.data;
+		} catch (err) {
+			throw isRejectedWithValue(err);
+		}
 	},
-];
+);
 
 const postsSlice = createSlice({
 	name: "posts",
@@ -47,14 +65,14 @@ const postsSlice = createSlice({
 	reducers: {
 		addPost: {
 			reducer(state, action: PayloadAction<IPost>) {
-				state.push(action.payload);
+				state.posts.push(action.payload);
 			},
-			prepare(title, content) {
+			prepare(title, body) {
 				return {
 					payload: {
 						id: nanoid(),
 						title,
-						content,
+						body,
 						reactions: {
 							thumbsUp: 0,
 							wow: 0,
@@ -67,9 +85,45 @@ const postsSlice = createSlice({
 			},
 		},
 	},
+	extraReducers(builder) {
+		builder
+			.addCase(fetchPosts.pending, (state) => {
+				state.status = "loading";
+			})
+			.addCase(fetchPosts.fulfilled, (state, action) => {
+				state.status = "succeeded";
+				const loadedPosts = action.payload.map((post: IPost) => {
+					post.reactions = {
+						thumbsUp: 0,
+						wow: 0,
+						heart: 0,
+						rocket: 0,
+						coffee: 0,
+					};
+					return post;
+				});
+				state.posts = state.posts.concat(loadedPosts);
+			})
+			.addCase(fetchPosts.rejected, (state, action) => {
+				state.status = "failed";
+				state.error = action.error.message;
+			})
+			.addCase(addNewPost.fulfilled, (state, action) => {
+				action.payload.reactions = {
+					thumbsUp: 0,
+					wow: 0,
+					heart: 0,
+					rocket: 0,
+					coffee: 0,
+				};
+				state.posts.push(action.payload);
+			});
+	},
 });
 
-export const selectAllPosts = (state: RootState) => state.posts;
+export const selectAllPosts = (state: RootState) => state.posts.posts;
+export const getPostsStatus = (state: RootState) => state.posts.status;
+export const getPostsError = (state: RootState) => state.posts.error;
 
 export const { addPost } = postsSlice.actions;
 export default postsSlice.reducer;
